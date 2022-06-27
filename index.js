@@ -7,8 +7,6 @@ let mongo = require('mongodb')
 let mongoose = require('mongoose')
 
 // Basic Configuration
-const port = process.env.PORT || 3000;
-
 app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
@@ -17,9 +15,6 @@ app.get('/', function(req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
-app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
-});
 
 
 // Connection to Database
@@ -35,6 +30,7 @@ connection.on('error', console.error.bind(console, "connection error"))
 connection.once('open', () => {
   console.log('MongoDB database connection has been established successfully')
 })
+
 
 // creating a schema for the model
 let urlSchema = mongoose.Schema({
@@ -79,3 +75,11 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), (req, res)
           
 })
 
+
+
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, function() {
+  console.log(`Listening on port ${port}`);
+});
