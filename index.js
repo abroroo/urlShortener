@@ -47,6 +47,14 @@ const responseObj = {};
 
 app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), (req, res) => {
   let urlInput = req.body.url
+
+  let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
+
+  if(!urlInput.match(urlRegex)){
+    res.json({error: 'Invalid URL'})
+    return
+  }
+
   responseObj["original_url"] = urlInput;
 
   let shortUrl = 1
@@ -75,7 +83,18 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), (req, res)
           
 })
 
+app.get('/api/shorturl/:input', (req, res) => {
+  let input = req.params.input
 
+  Url.findOne({short: input}, (error, result) => {
+    if(!error && result != undefined){
+      res.redirect(result.original)
+    } else {
+      res.json("URL Not Found")
+    }
+  })
+
+})
 
 
 const port = process.env.PORT || 3000;
