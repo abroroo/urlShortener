@@ -8,25 +8,48 @@
       type="image/png"
       href="https://cdn.freecodecamp.org/universal/favicons/favicon-16x16.png"
     />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="/public/style.css" rel="stylesheet" type="text/css" />
+    
+   
   </head>
 
   <body>
-    <h1>URL Shortener Microservice</h1>
+    <h2>URL Shortener Microservice</h2>
+    <h4>User Story</h4>
+    <ol class="user-stories">
+      <li>You can POST a URL to /api/shorturl and get a JSON response with original_url and short_url properties. Here's an example: <code>{ original_url : 'https://freeCodeCamp.org', short_url : 1}</code></li><br />
+      <li>When you visit <code>/api/shorturl/<short_url></code>, you will be redirected to the original URL.</p>
+      <li>If you pass an invalid URL that doesn't follow the valid 'http://www.example.com' format, the JSON response will contain <code>{ error: 'invalid url' }</code></li>
+    
+    </ol>
     <main>
       <section>
         <form action="/api/shorturl" method="POST">
-          <fieldset>
-            <legend>URL Shortener</legend>
-            <label for="url_input">URL:</label>
-            <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
-            <input type="submit" value="POST URL" />
-          </fieldset>
-        </form>
+          <h4 class="short-text">URL Shortener</h4>
+          <div class="form-inline">
+            
+            <label for="url_input">Enter URL:</label>
+            <input type="url" class="form-control" id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" >
+            <button class="btn btn-dark ml-2" type="submit" value="POST URL" >Post Url</button>
+          </div>
+        </form> 
+        
       </section>
     </main>
     <footer>
-      <p>By <a href="https://www.freecodecamp.org/">freeCodeCamp</a></p>
+      <p><a href="https://www.freecodecamp.org/">freeCodeCamp</a> project by <a href="https://github.com/abroroo">abroroo</a></p>
     </footer>
   </body>
 </html>
+
+<!-- 
+<form action="/api/shorturl" method="POST">
+          
+  <legend>URL Shortener</legend>
+  <label for="url_input">URL:</label>
+  <input id="url_input" type="text" name="url" placeholder="https://www.freecodecamp.org/" />
+  <input type="submit" value="POST URL" />
+
+</form> -->

@@ -1,4 +1,5 @@
-require('dotenv').config();
+const dotenv = require("dotenv");  //require dotenv package
+dotenv.config({ path: "./config.env" })
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -18,8 +19,9 @@ app.get('/', function(req, res) {
 
 
 // Connection to Database
+let URI = process.env.MONGO_URI;
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(URI, {
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000
 })
@@ -97,8 +99,9 @@ app.get('/api/shorturl/:input', (req, res) => {
 })
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000 ;
 
-app.listen(port, function() {
-  console.log(`Listening on port ${port}`);
+// listen for requests :)
+var listener = app.listen(port, function () {
+  console.log('Your app is listening on port ' + listener.address().port);
 });

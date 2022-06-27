@@ -1,33 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Oranienbaum&family=Vidaloka&display=swap');
+
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Jost', sans-serif;/*
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Nanum Myeongjo', serif;
+font-family: 'Oranienbaum', serif;
+font-family: 'Vidaloka', serif;*/
   font-size: 16px;
   color: #222;
   background-color: #fff;
   text-align: center;
   line-height: 1.4em;
+  margin-top: 100px;
 }
 
 main {
   padding: 0;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
-h3 {
-  margin-top: 30px;
+h2 {
+  margin-bottom: 20px;
 }
-
-
-
-.user-stories li {
-  margin-bottom: 1em;
+.user-stories {
+  position: relative;
+	text-align: justify;
+	max-width: 750px;
+	margin: 15px auto;
 }
-
 a {
   color: #2574a9;
 }
 
+ul {
+	list-style-type: none;
+  }
+li {
+  margin-bottom: 0.5em;
+}
+
 form {
-  margin: 10px auto;
+  margin: auto;
   padding: 20px;
   max-width: 600px;
 }
@@ -39,8 +53,21 @@ label {
 input {
   padding: 5px;
 }
-
-input[type='text'] {
+/*
+input[type='text'] 
   width: 220px;
   text-align: center;
+}*/
+.short-text{
+  margin-bottom: 20px;
+}
+
+.form-inline .form-control {
+  width: 390px;
+}
+
+@media (min-width: 576px) {
+.form-inline .form-control {
+  width: 370px;
+}
 }
