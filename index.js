@@ -6,13 +6,14 @@ const app = express();
 const bodyParser = require('body-parser');
 let mongo = require('mongodb')
 let mongoose = require('mongoose')
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 // Basic Configuration
 app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
@@ -34,10 +35,37 @@ connection.once('open', () => {
 })
 
 
+
+// const uri = "mongodb+srv://abror:dfn8lkuI1UVdF3Fh@fcc.q42tkvn.mongodb.net/fcc?retryWrites=true&w=majority";
+
+// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   }
+// });
+
+// async function run() {
+//   try {
+//     // Connect the client to the server	(optional starting in v4.7)
+//     await client.connect();
+//     // Send a ping to confirm a successful connection
+//     await client.db("admin").command({ ping: 1 });
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     await client.close();
+//   }
+// }
+// run().catch(console.dir);
+
+
 // creating a schema for the model
 let urlSchema = mongoose.Schema({
-  original: {type: String, required: true},
-  short: {type: Number}
+  original: { type: String, required: true },
+  short: { type: Number }
 })
 // creating the actual model
 let Url = mongoose.model('Url', urlSchema);
@@ -52,8 +80,8 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), (req, res)
 
   let urlRegex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)
 
-  if(!urlInput.match(urlRegex)){
-    res.json({error: 'Invalid URL'})
+  if (!urlInput.match(urlRegex)) {
+    res.json({ error: 'Invalid URL' })
     return
   }
 
@@ -62,34 +90,34 @@ app.post('/api/shorturl', bodyParser.urlencoded({ extended: false }), (req, res)
   let shortUrl = 1
 
   Url.findOne({})
-        .sort({short: 'desc'})
-        .exec((error, result) => {
-          if (!error && result != undefined){
-            shortUrl = result.short + 1
+    .sort({ short: 'desc' })
+    .exec((error, result) => {
+      if (!error && result != undefined) {
+        shortUrl = result.short + 1
+      }
+      if (!error) {
+        Url.findOneAndUpdate(
+          { original: urlInput },
+          { original: urlInput, short: shortUrl },
+          { new: true, upsert: true },
+          (error, savedUrl) => {
+            if (!error) {
+              responseObj["short_url"] = savedUrl.short
+              res.json(responseObj)
+            }
           }
-          if (!error){
-            Url.findOneAndUpdate(
-              {original: urlInput},
-              {original: urlInput, short: shortUrl},
-              {new: true, upsert: true},
-              (error, savedUrl) => {
-                if (!error) {
-                  responseObj["short_url"] = savedUrl.short
-                  res.json(responseObj)
-                }
-              }
-            )
-          }
+        )
+      }
 
-        })
-          
+    })
+
 })
 
 app.get('/api/shorturl/:input', (req, res) => {
   let input = req.params.input
 
-  Url.findOne({short: input}, (error, result) => {
-    if(!error && result != undefined){
+  Url.findOne({ short: input }, (error, result) => {
+    if (!error && result != undefined) {
       res.redirect(result.original)
     } else {
       res.json("URL Not Found")
@@ -99,7 +127,7 @@ app.get('/api/shorturl/:input', (req, res) => {
 })
 
 
-const port = process.env.PORT || 3000 ;
+const port = process.env.PORT || 3000;
 
 // listen for requests :)
 var listener = app.listen(port, function () {
