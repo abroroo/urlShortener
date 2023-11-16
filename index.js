@@ -14,6 +14,7 @@ app.use(cors());
 app.use('/public', express.static(`${process.cwd()}/public`));
 
 app.get('/', function (req, res) {
+  console.log('This is the root page for views: ', process.cwd())
   res.sendFile(process.cwd() + '/views/index.html');
 });
 
@@ -22,44 +23,43 @@ app.get('/', function (req, res) {
 // Connection to Database
 let URI = process.env.MONGO_URI;
 
-mongoose.connect(URI, {
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000
-})
+// mongoose.connect(URI, {
+//   useUnifiedTopology: true,
+//   serverSelectionTimeoutMS: 5000
+// })
 
-const connection = mongoose.connection;
+// const connection = mongoose.connection;
 
-connection.on('error', console.error.bind(console, "connection error"))
-connection.once('open', () => {
-  console.log('MongoDB database connection has been established successfully')
-})
+// connection.on('error', console.error.bind(console, "connection error"))
+// connection.once('open', () => {
+//   console.log('MongoDB database connection has been established successfully')
+// })
 
 
 
-// const uri = "mongodb+srv://abror:dfn8lkuI1UVdF3Fh@fcc.q42tkvn.mongodb.net/fcc?retryWrites=true&w=majority";
 
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   }
-// });
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(URI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
-// async function run() {
-//   try {
-//     // Connect the client to the server	(optional starting in v4.7)
-//     await client.connect();
-//     // Send a ping to confirm a successful connection
-//     await client.db("admin").command({ ping: 1 });
-//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     await client.close();
-//   }
-// }
-// run().catch(console.dir);
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 
 // creating a schema for the model
@@ -69,6 +69,7 @@ let urlSchema = mongoose.Schema({
 })
 // creating the actual model
 let Url = mongoose.model('Url', urlSchema);
+
 
 
 // Your first API endpoint
