@@ -6,4 +6,4 @@
 2. When you visit `/api/shorturl/`, you will be redirected to the original URL.
 3. If you pass an invalid URL that doesn't follow the valid `['http://www.example.com']` format, the JSON response will contain `{ error: 'invalid url' }`
 
-[DEMO](https://urlshortener-s7sw.onrender.com)
+ [DEMO](https://urlshortener-s7sw.onrender.com) ps: It takes some time to load, please give it a time
